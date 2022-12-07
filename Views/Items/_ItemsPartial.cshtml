@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Proj.Models.Item>
+
+<div class="items-container">
+    <div class="card-deck mb-3 text-center">
+
+        @*Create new card per item, every N items will create a new row*@
+        @{
+            int n = 3;
+            int currItemCt = 0;
+        }
+        @foreach (var item in Model)
+        {
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">@Html.DisplayFor(modelItem => item.Name)</h4>
+                </div>
+                <div class="card-body">
+                    <img src=@item.ImgPath />
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>$@Html.DisplayFor(modelItem => item.Price)</li>
+                    </ul>
+                    <button type="button" class="btn btn-lg btn-block btn-outline-primary">Add to Cart</button>
+                </div>
+            </div>
+            currItemCt++;
+
+            if (currItemCt % n == 0)
+            {
+                <div class="w-100"></div>
+            }
+        }
+
+        @*Create invisible "filler" items to maintain item sizes*@
+        @{
+            int fillerItemCt = n - (Model.Count() % n);
+        }
+        @while (fillerItemCt > 0 && fillerItemCt % n != 0)
+        {
+            <partial name="_FillerItemPartial" />
+            fillerItemCt--;
+        }
+    </div>
+</div>
